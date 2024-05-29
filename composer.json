@@ -24,6 +24,7 @@
         "hyperf/config": "^3.0",
         "hyperf/engine": "^2.10",
         "hyperf/http-server": "^3.0",
-        "hyperf/command": "^3.0"
+        "hyperf/command": "^3.0",
+        "hyperf/paginator": "^3.0"
     }
 }
