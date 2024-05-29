@@ -65,7 +65,7 @@ class ScaffoldController extends AbstractAdminController
             $fields[$column] = Schema::getColumnType($tableName, $column);
         }
 
-        $templatePath = realpath(BASE_PATH) . '/resource/templates/';
+        $templatePath = realpath(BASE_PATH) . '/resources/templates/';
         if ($this->request->input('build_model')) {
             $modelContent = file_get_contents($templatePath . 'model.vm');
             $modelContent = str_replace("#upperClassName#", $upperClassName, $modelContent);
@@ -98,8 +98,8 @@ class ScaffoldController extends AbstractAdminController
         }
 
         if ($this->request->input('build_view')) {
-            if (!file_exists(realpath(BASE_PATH) . '/resource/view/admin/' . $lowerPathName)) {
-                mkdir(realpath(BASE_PATH) . '/resource/view/admin/' . $lowerPathName);
+            if (!file_exists(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName)) {
+                mkdir(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName);
             }
 
             //list
@@ -128,7 +128,7 @@ class ScaffoldController extends AbstractAdminController
                 }
             }
             $listContent = str_replace("#tdRowContent#", $tdRowContent, $listContent);
-            file_put_contents(realpath(BASE_PATH) . '/resource/view/admin/' . $lowerPathName . '/list.blade.php', $listContent);
+            file_put_contents(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName . '/list.blade.php', $listContent);
 
             //edit
             $editContent = file_get_contents($templatePath . 'edit.vm');
@@ -147,7 +147,7 @@ class ScaffoldController extends AbstractAdminController
                 }
             }
             $editContent = str_replace("#formListContent#", $formContent, $editContent);
-            file_put_contents(realpath(BASE_PATH) . '/resource/view/admin/' . $lowerPathName . '/edit.blade.php', $editContent);
+            file_put_contents(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName . '/edit.blade.php', $editContent);
         }
 
         return ServiceConstant::success();
