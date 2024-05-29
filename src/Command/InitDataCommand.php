@@ -25,7 +25,9 @@ class InitDataCommand extends HyperfCommand
                 'view.php'
             ];
             foreach ($configArray as $file) {
-                unlink(BASE_PATH . '/config/autoload/' . $file);
+                if(file_exists(BASE_PATH . '/config/autoload/' . $file)){
+                    unlink(BASE_PATH . '/config/autoload/' . $file);
+                }
                 copy(BASE_PATH . '/vendor/liuxinyang/hyperf-admin/config/' . $file, BASE_PATH . '/config/autoload/' . $file);
             }
             if (!is_dir(BASE_PATH . '/app/Controller/Admin')) {

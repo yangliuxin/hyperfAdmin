@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace App\Controller\Admin;
 
+use Liuxinyang\HyperfAdmin\Controller\Admin\AbstractAdminController;
 use App\Model\#upperClassName#;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
-use Illuminate\Support\Str;
 
 #[Controller]
 class #upperClassName#Controller extends AbstractAdminController
