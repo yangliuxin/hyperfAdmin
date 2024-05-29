@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 
 use Yangliuxin\Utils\Utils\ServiceConstant;

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
-use App\Model\AdminUsers;
+use Liuxinyang\HyperfAdmin\Model\AdminUsers;
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;

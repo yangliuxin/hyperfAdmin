@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model;
+namespace Liuxinyang\HyperfAdmin\Model;
+
 
 class AdminMenus extends Model
 {

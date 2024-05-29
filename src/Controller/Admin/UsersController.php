@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
-use App\Model\AdminRoles;
-use App\Model\AdminRoleUsers;
-use App\Model\AdminUsers;
+use Liuxinyang\HyperfAdmin\Model\AdminRoles;
+use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
+use Liuxinyang\HyperfAdmin\Model\AdminUsers;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;

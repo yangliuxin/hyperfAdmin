@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\Admin;
+namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 
-use App\Model\AdminMenus;
+use Liuxinyang\HyperfAdmin\Model\AdminMenus;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;

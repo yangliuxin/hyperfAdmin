@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace App\Controller\Admin;
+namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
-use App\Model\AdminMenus;
-use App\Model\AdminRolePermissions;
-use App\Model\AdminRoleUsers;
+use Liuxinyang\HyperfAdmin\Model\AdminMenus;
+use Liuxinyang\HyperfAdmin\Model\AdminRolePermissions;
+use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
