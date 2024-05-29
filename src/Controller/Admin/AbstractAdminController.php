@@ -19,7 +19,6 @@ use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Hyperf\Stringable\Str;
 use Hyperf\View\RenderInterface;
 use Psr\Container\ContainerInterface;
 use Yangliuxin\Utils\Utils\TreeUtils;
@@ -89,7 +88,7 @@ abstract class AbstractAdminController
         if ($file) {
             $image = file_get_contents($file->getRealPath());
             if ($image) {
-                $imagePath = '/uploads/images/' . Str::random(10) . '.png';
+                $imagePath = '/uploads/images/' . str_random(10) . '.png';
                 $storagePath = realpath(BASE_PATH . '/public');
                 file_put_contents($storagePath . $imagePath, $image);
                 return $imagePath;

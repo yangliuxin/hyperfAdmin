@@ -28,8 +28,23 @@ class InitDataCommand extends HyperfCommand
                 unlink(BASE_PATH . '/config/autoload/' . $file);
                 copy(BASE_PATH . '/vendor/liuxinyang/hyperf-admin/config/' . $file, BASE_PATH . '/config/autoload/' . $file);
             }
-            if (!is_dir(BASE_PATH . '/public')) {
-                mkdir(BASE_PATH . '/public');
+            if (!is_dir(BASE_PATH . '/app/Controller/Admin')) {
+                mkdir(BASE_PATH . '/app/Controller/Admin');
+            }
+            if (!is_dir(BASE_PATH . '/public/uploads')) {
+                mkdir(BASE_PATH . '/public/uploads', 0777, true);
+            }
+            if (!is_dir(BASE_PATH . '/public/uploads/images')) {
+                mkdir(BASE_PATH . '/public/uploads/images', 0777, true);
+            }
+            if (!is_dir(BASE_PATH . '/resources')) {
+                mkdir(BASE_PATH . '/resources');
+            }
+            if (!is_dir(BASE_PATH . '/resources/view')) {
+                mkdir(BASE_PATH . '/resources/view');
+            }
+            if (!is_dir(BASE_PATH . '/resources/view/admin')) {
+                mkdir(BASE_PATH . '/resources/view/admin');
             }
             self::copyFolder(BASE_PATH . '/vendor/liuxinyang/hyperf-admin/assets', BASE_PATH . '/public/vendor');
 

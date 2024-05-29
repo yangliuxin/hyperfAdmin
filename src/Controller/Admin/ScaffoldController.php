@@ -22,7 +22,7 @@ class ScaffoldController extends AbstractAdminController
             $this->session->clear();
             return $this->response->redirect('/admin/login');
         }
-        $tables = DB::select('SHOW TABLES');
+        $tables = Db::select('SHOW TABLES');
         $tableList = [];
         foreach ($tables as $table) {
             $tableKey = 'Tables_in_' . strtolower(\Hyperf\Config\config("databases.default.database"));
@@ -65,7 +65,7 @@ class ScaffoldController extends AbstractAdminController
             $fields[$column] = Schema::getColumnType($tableName, $column);
         }
 
-        $templatePath = realpath(BASE_PATH) . '/resources/templates/';
+        $templatePath = realpath(BASE_PATH) . '/vendor/liuxinyang/hyperf-admin/resources/templates/';
         if ($this->request->input('build_model')) {
             $modelContent = file_get_contents($templatePath . 'model.vm');
             $modelContent = str_replace("#upperClassName#", $upperClassName, $modelContent);
@@ -98,7 +98,7 @@ class ScaffoldController extends AbstractAdminController
         }
 
         if ($this->request->input('build_view')) {
-            if (!file_exists(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName)) {
+            if (!file_exists(realpath(BASE_PATH) . '/vendor/liuxinyang/hyperf-admin/resources/view/admin/' . $lowerPathName)) {
                 mkdir(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName);
             }
 

@@ -9,7 +9,6 @@ use Liuxinyang\HyperfAdmin\Model\AdminUsers;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
-use Illuminate\Support\Str;
 
 #[Controller]
 class UsersController extends AbstractAdminController
@@ -72,7 +71,7 @@ class UsersController extends AbstractAdminController
             if ($name) {
                 $userData['name'] = $name;
             }
-            $userData['salt'] = Str::random(8);
+            $userData['salt'] = str_random(8);
             $userData['password'] = md5($password . $userData['salt']);
 
             $path = $this->dealFiletype($avatarFile);
