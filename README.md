@@ -5,3 +5,6 @@ admin for hyperf
 #### 2、composer require liuxinyang/hyperf-admin ####
 #### 3、php bin/hyperf.php vendor:publish liuxinyang/hyperf-admin ####
 #### 4、php bin/hyperf.php init:data ####
+#### 5、route.php 里填写如下路由 ####
+    Router::addRoute(['GET', 'POST', 'HEAD'], '/admin', 'Liuxinyang\HyperfAdmin\Controller\Admin\IndexController@index');
+    Router::addRoute(['GET', 'POST', 'HEAD'], '/admin/', 'Liuxinyang\HyperfAdmin\Controller\Admin\IndexController@index');

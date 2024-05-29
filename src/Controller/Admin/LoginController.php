@@ -25,32 +25,31 @@ class LoginController extends AbstractAdminController
     #[RequestMapping('/admin/login', methods: ['POST'])]
     public function loginPost()
     {
-        $errors = [];
         $username = $this->request->input('username');
         $password = $this->request->input('password');
         $remember = $this->request->input('remember');
         $csrf_token = $this->request->input('csrf_token');
         if(!$csrf_token || $csrf_token != $this->session->get('csrf_token')){
-            $errors['username'] = 'csrf token error';
-            return $this->render->render('admin/login', ['error' => $errors]);
+            $this->bladeData['error']['username'] = 'csrf token error';
+            return $this->render->render('admin/login', $this->bladeData);
         }
         if (!$username) {
-            $errors['username'] = '用户名不许为空';
-            return $this->render->render('admin/login', ['error' => $errors]);
+            $this->bladeData['error']['username'] = '用户名不许为空';
+            return $this->render->render('admin/login', $this->bladeData);
         }
         if (!$password) {
-            $errors['password'] = '请输入密码';
-            return $this->render->render('admin/login', ['error' => $errors]);
+            $this->bladeData['error']['password'] = '请输入密码';
+            return $this->render->render('admin/login', $this->bladeData);
         }
 
         $user = AdminUsers::where('username', $username)->first();
         if (!$user) {
-            $errors['username'] = '用户不存在';
-            return $this->render->render('admin/login', ['error' => $errors]);
+            $this->bladeData['error']['username'] = '用户不存在';
+            return $this->render->render('admin/login', $this->bladeData);
         }
         if (md5($password . $user['salt']) != $user['password']) {
-            $errors['password'] = '密码不正确';
-            return $this->render->render('admin/login', ['error' => $errors]);
+            $this->bladeData['error']['password'] = '密码不正确';
+            return $this->render->render('admin/login', $this->bladeData);
         }
 
         $this->session->set("admin", json_encode($user, 320));
