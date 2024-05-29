@@ -16,7 +16,7 @@ return [
     'engine' => Hyperf\ViewEngine\HyperfViewEngine::class,
     'mode' => Mode::SYNC,
     'config' => [
-        'view_path' => BASE_PATH . '/resources/view/',
+        'view_path' => [BASE_PATH . '/resources/view/', BASE_PATH . '/vendor/liuxinyang/hyperf-admin/resources/view/',],
         'cache_path' => BASE_PATH . '/runtime/view/',
     ],
 ];
