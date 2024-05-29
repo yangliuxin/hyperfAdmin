@@ -25,6 +25,10 @@ class LoginController extends AbstractAdminController
     #[RequestMapping('/admin/login', methods: ['POST'])]
     public function loginPost()
     {
+        if(!$this->session->get('csrf_token')){
+            $this->session->set('csrf_token', str_random(32));
+        }
+        $this->bladeData['_token'] = $this->session->get('csrf_token');
         $username = $this->request->input('username');
         $password = $this->request->input('password');
         $remember = $this->request->input('remember');
