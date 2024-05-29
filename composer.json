@@ -27,5 +27,13 @@
         "hyperf/command": "^3.0",
         "hyperf/paginator": "^3.0",
         "doctrine/dbal": "^3.8"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "dev-master"
+        },
+        "hyperf": {
+            "config": "Liuxinyang\\HyperfAdmin\\ConfigProvider"
+        }
     }
 }
