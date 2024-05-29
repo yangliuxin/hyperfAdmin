@@ -1,0 +1,17 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Model;
+
+class #upperClassName# extends Model
+{
+
+    protected ?string $table = '#tableName#';
+
+    protected string $primaryKey = 'id';
+
+    protected array $fillable = #tableColumnArray#;
+
+    protected array $casts = ['id' => 'integer'];
+
+}

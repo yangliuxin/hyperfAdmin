@@ -1,0 +1,106 @@
+<?php
+declare(strict_types=1);
+namespace App\Controller\Admin;
+
+use App\Model\#upperClassName#;
+use Yangliuxin\Utils\Utils\ServiceConstant;
+use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\RequestMapping;
+use Illuminate\Support\Str;
+
+#[Controller]
+class #upperClassName#Controller extends AbstractAdminController
+{
+    #[RequestMapping('/admin/#lowerPathName#',  methods: ['GET'])]
+    public function list#upperClassName#()
+    {
+        $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->redirect('/admin/login');
+        }
+        $#lowerClassName#List = #upperClassName#::orderBy('id', 'asc')->paginate(20);
+        $this->bladeData['#lowerClassName#List'] = $#lowerClassName#List;
+        $this->bladeData['pageNo'] = $#lowerClassName#List->currentPage();
+        $totalPages = floor($#lowerClassName#List->total() / $#lowerClassName#List->perPage()) + ($#lowerClassName#List->total() % $#lowerClassName#List->perPage() == 0 ? 0 : 1);
+        $this->bladeData['totalPages'] = $totalPages;
+        $this->bladeData['total'] = $#lowerClassName#List->total();
+        $this->bladeData['pageNums'] = $#lowerClassName#List->perPage();
+        return $this->render->render('admin/#lowerPathName#/list', $this->bladeData);
+    }
+
+    #[RequestMapping('/admin/#lowerPathName#/create',  methods: ['GET', 'POST'])]
+    public function create#upperClassName#()
+    {
+        $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->redirect('/admin/login');
+        }
+
+        $data = new #upperClassName#();
+        $this->bladeData["error"] = [];
+        $this->bladeData['data'] = $data;
+        if($this->request->isMethod("POST")){
+            $csrf_token = $this->request->input('csrf_token');
+            if(!$csrf_token || $csrf_token != $this->session->get('csrf_token')){
+                $errors['title'] = 'csrf token error';
+                return $this->render->render('admin/#lowerPathName#/edit', ['error' => $errors]);
+            }
+
+#modelRequest#
+
+            #upperClassName#::create($modelData);
+            return $this->response->redirect("/admin/#lowerPathName#");
+        }
+        return $this->render->render('admin/#lowerPathName#/edit', $this->bladeData);
+    }
+
+    #[RequestMapping('/admin/#lowerPathName#/edit/{id}',  methods: ['GET', 'POST'])]
+    public function edit#upperClassName#($id)
+    {
+        if(!$id){
+            return $this->response->redirect('/admin/#lowerPathName#');
+        }
+        $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->redirect('/admin/login');
+        }
+        $data = #upperClassName#::find($id);
+        $this->bladeData["error"] = [];
+        $this->bladeData['data'] = $data;
+        if($this->request->isMethod("POST")){
+            $csrf_token = $this->request->input('csrf_token');
+            if(!$csrf_token || $csrf_token != $this->session->get('csrf_token')){
+                $errors['title'] = 'csrf token error';
+                return $this->render->render('admin/#lowerPathName#/edit', ['error' => $errors]);
+            }
+#modelRequest#
+
+            #upperClassName#::where('id', $id)->update($modelData);
+            return $this->response->redirect("/admin/#lowerPathName#");
+        }
+
+        return $this->render->render('admin/#lowerPathName#/edit', $this->bladeData);
+    }
+
+    #[RequestMapping('/admin/#lowerPathName#/delete/{id}',  methods: ['DELETE'])]
+    public function delete#upperClassName#($id)
+    {
+        if(!$id){
+            return $this->response->redirect('/admin/#lowerPathName#');
+        }
+        $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        }
+        #upperClassName#::where('id', $id)->delete();
+        return ServiceConstant::success();
+    }
+}

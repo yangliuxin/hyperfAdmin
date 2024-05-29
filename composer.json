@@ -1,0 +1,21 @@
+{
+    "name": "liuxinyang/hyperf-admin",
+    "description": "admin for hyperf",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Liuxinyang\\HyperfAdmin\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "liuxin",
+            "email": "lxyang_21@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "yangliuxin/utils": "^1.0"
+    }
+}
