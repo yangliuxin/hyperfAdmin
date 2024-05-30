@@ -57,6 +57,7 @@ class RolesController extends AbstractAdminController
         $this->bladeData['treeData'] = json_encode($jsTreeList);
         $this->bladeData["error"] = [];
         $this->bladeData['data'] = $data;
+        $this->bladeData["permissions"] = json_encode([]);
         if ($this->request->isMethod("POST")) {
             $csrf_token = $this->request->input('csrf_token');
             if(!$csrf_token || $csrf_token != $this->session->get('csrf_token')){
