@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
+use Liuxinyang\HyperfAdmin\Model\AdminStats;
 use Liuxinyang\HyperfAdmin\Model\AdminUsers;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
@@ -19,6 +20,46 @@ class IndexController extends AbstractAdminController
             $this->session->clear();
             return $this->response->redirect('/admin/login');
         }
+        $this->bladeData['dataCount1'] = 10000;
+        $this->bladeData['dataCount2'] = 20000;
+        $this->bladeData['dataCount3'] = 30000;
+        $this->bladeData['dataCount4'] = 40000;
+        $this->bladeData['hotUriList'] = AdminStats::getHotUrlList();
+        $data = AdminStats::getPieData();
+        $pieChartData = [
+            'title' => '访问地区统计(pv)',
+            'legends' => $data['legends'],
+            'seriesName' => '访问地区统计(PV)',
+            'seriesData' => $data['seriesData']
+        ];
+        $this->bladeData['pieChartData'] = json_encode($pieChartData);
+
+        $data = AdminStats::getLineStatData();
+        $lineChartData = [
+            'title' => '访问统计折线图',
+            'legend' => [
+                'data' => ['UV','PV'],
+                'selected' => ['UV' => true, 'PV' => true,]
+            ],
+            'yAxisName' => '访问量',
+            'xAxisData' => ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+            'seriesData' => [
+                [
+                    'name' => 'UV',
+                    'type' => 'line',
+                    'stack' => '总量',
+                    'data' => $data[1]
+                ],
+                [
+                    'name' => 'PV',
+                    'type' => 'line',
+                    'stack' => '总量',
+                    'data' => $data[0]
+                ],
+            ]
+        ];
+
+        $this->bladeData['lineChartData'] = json_encode($lineChartData);
         return $this->render->render('admin/index', $this->bladeData);
     }
 

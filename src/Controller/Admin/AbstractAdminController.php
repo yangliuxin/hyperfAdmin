@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
+use Hyperf\Context\ApplicationContext;
 use Liuxinyang\HyperfAdmin\Model\AdminMenus;
 use Liuxinyang\HyperfAdmin\Model\AdminRolePermissions;
 use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
@@ -20,6 +21,7 @@ use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\View\RenderInterface;
+use Liuxinyang\HyperfAdmin\Model\AdminStats;
 use Psr\Container\ContainerInterface;
 use Yangliuxin\Utils\Utils\TreeUtils;
 
@@ -42,8 +44,29 @@ abstract class AbstractAdminController
 
     protected array $bladeData;
 
+    protected static function getRealIp(RequestInterface $request): string
+    {
+        $headers = $request->getHeaders();
+
+        if(!empty($headers['x-forwarded-for'][0])) {
+            return $headers['x-forwarded-for'][0];
+        } elseif (!empty($headers['x-real-ip'][0])) {
+            return $headers['x-real-ip'][0];
+        }
+
+        $serverParams = $request->getServerParams();
+        return $serverParams['remote_addr'] ?? '';
+
+    }
     protected function _init()
     {
+        $uri = $this->request->getUri();
+        $ip = self::getRealIp($this->request);
+        $ipInfo = getIpInfo($ip);
+        $province = $ipInfo['province'];
+        $city = $ipInfo['city'];
+        AdminStats::log($uri, $ip, $province, $city);
+
         $user = $this->session->get("admin");
         $cookie = $this->request->cookie('name');
         if (!$user && !$cookie) {
