@@ -25,12 +25,11 @@ class ScaffoldController extends AbstractAdminController
         $tables = Db::select('SHOW TABLES');
         $tableList = [];
         foreach ($tables as $table) {
-            $tableKey = 'Tables_in_' . strtolower(\Hyperf\Config\config("databases.default.database"));
             $table = json_decode(json_encode($table), true);
-            if (!in_array($table[$tableKey], ['admin_users', 'admin_roles', 'admin_role_permissions', 'admin_role_users', 'admin_menus', 'admin_stats'])) {
-                $tableList[] = $table[$tableKey];
+            $table = array_values($table);
+            if (!in_array($table[0], ['admin_users', 'admin_roles', 'admin_role_permissions', 'admin_role_users', 'admin_menus', 'admin_stats'])) {
+                $tableList[] = $table[0];
             }
-
         }
         $this->bladeData['tables'] = $tableList;
 
