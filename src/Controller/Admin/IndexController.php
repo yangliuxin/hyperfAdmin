@@ -38,11 +38,11 @@ class IndexController extends AbstractAdminController
         $lineChartData = [
             'title' => '访问统计折线图',
             'legend' => [
-                'data' => ['UV','PV'],
+                'data' => ['UV', 'PV'],
                 'selected' => ['UV' => true, 'PV' => true,]
             ],
             'yAxisName' => '访问量',
-            'xAxisData' => ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+            'xAxisData' => ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
             'seriesData' => [
                 [
                     'name' => 'UV',
