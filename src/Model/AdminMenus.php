@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Model;
 
-
 class AdminMenus extends Model
 {
 
