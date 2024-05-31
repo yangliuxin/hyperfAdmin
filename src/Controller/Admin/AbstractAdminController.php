@@ -103,13 +103,15 @@ abstract class AbstractAdminController
 
     protected static function hasPermission($uid, $targetId): bool
     {
-        $roleId = AdminRoleUsers::where('user_id', $uid)->value('role_id');
-        $permissions = AdminRolePermissions::getAllPermissions($roleId);
-
-        if (!in_array($targetId, $permissions) && $uid != '1' && $roleId != 1) {
-            return false;
+        if ($uid == 1) {
+            return true;
         }
-        if (in_array($targetId, $permissions) || $uid != '1' || $roleId != 1) {
+        $roleId = AdminRoleUsers::where('user_id', $uid)->value('role_id');
+        if ($roleId == 1) {
+            return true;
+        }
+        $permissions = AdminRolePermissions::getAllPermissions($roleId);
+        if (in_array($targetId, $permissions)) {
             return true;
         }
         return false;
