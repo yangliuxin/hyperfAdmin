@@ -1,0 +1,5 @@
+            $pathArray = $this->dealMultiFiletype($this->request->file("#field#"));
+            if($pathArray){
+                $modelData['#field#'] = join(",", $pathArray);
+            }
+

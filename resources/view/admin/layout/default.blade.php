@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="/vendor/AdminLTE-2.4.18/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="/vendor/AdminLTE/plugins/select2/select2.min.css">
     <link rel="stylesheet" href="/vendor/nestable/nestable.css">
-    <link rel="stylesheet" href="/vendor/AdminLTE/plugins/select2/select2.min.css">
     <link rel="stylesheet" href="/vendor/AdminLTE/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/vendor/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css">
     <link rel="stylesheet" href="/vendor/sweetalert2/dist/sweetalert2.css">

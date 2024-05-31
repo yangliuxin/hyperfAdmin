@@ -14,4 +14,8 @@ class #upperClassName# extends Model
 
     protected array $casts = ['id' => 'integer'];
 
+    protected array $attributes = [
+            #defaultAttributes#
+        ];
+
 }

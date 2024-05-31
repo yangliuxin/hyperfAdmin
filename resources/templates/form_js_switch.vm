@@ -1,0 +1,25 @@
+                                            var #field# = {{$data['#field#']}}
+                                            var #field#State = false;
+                                            if (#field# === 1) {
+                                                $('.#field#').attr('checked', 'checked');
+                                                #field#State = true
+                                            } else {
+                                                $('.#field#').removeAttr('checked');
+                                                #field#State = false
+                                            }
+                                            $('.#field#').bootstrapSwitch({
+                                                size: 'small',
+                                                onText: 'ON',
+                                                offText: 'OFF',
+                                                onColor: 'primary',
+                                                offColor: 'default',
+                                                state: #field#State,
+                                                onSwitchChange: function (event, state) {
+                                                    $(event.target).closest('.bootstrap-switch').next().val(state ? 'on' : 'off').change();
+                                                    if (state) {
+                                                        $('.#field#').attr('checked', 'checked');
+                                                    } else {
+                                                        $('.#field#').removeAttr('checked');
+                                                    }
+                                                }
+                                            });

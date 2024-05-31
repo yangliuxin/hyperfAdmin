@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('content')
-    <link rel="stylesheet" href="/vendor/bootstrap-fileinput/css/fileinput.min.css">
+    #formCssContent#
     <style>
         .glyphicon{
             color: orange;
@@ -9,7 +9,7 @@
 <div class="content-wrapper">
 <section class="content-header">
     <h1>
-        #tableName#管理
+        #tableNameComment#管理
         <small>新增</small>
     </h1>
 </section>
@@ -34,7 +34,7 @@
                     <div class="box-body">
                         <div class="fields-group">
                             <div class="col-md-12">
-                                #formListContent#
+#formListContent#
                             </div>
                         </div>
                     </div>
@@ -62,18 +62,12 @@
 <script src="/vendor/AdminLTE-2.4.18/dist/js/adminlte.min.js"></script>
 <script src="/vendor/js/app.js"></script>
 <script src="/vendor/nestable/jquery.nestable.js"></script>
-<script src="/vendor/AdminLTE/plugins/select2/select2.full.min.js"></script>
-<script src="/vendor/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.min.js"></script>
-<script src="/vendor/number-input/bootstrap-number-input.js"></script>
-<script src="/vendor/jstree/jstree.js"></script>
-<script src="/vendor/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"></script>
-<script src="/vendor/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="/vendor/jstree/jstree.js"></script>
+#formJsContent#
 
     <script>
         $(function () {
             $('#form').attr('action', window.location.href)
-
+            #formScriptContent#
         });
     </script>
 @endsection

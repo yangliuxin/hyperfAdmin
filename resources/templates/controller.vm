@@ -15,11 +15,10 @@ class #upperClassName#Controller extends AbstractAdminController
     public function list#upperClassName#()
     {
         $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
+
         $#lowerClassName#List = #upperClassName#::orderBy('id', 'asc')->paginate(20);
         $this->bladeData['#lowerClassName#List'] = $#lowerClassName#List;
         $this->bladeData['pageNo'] = $#lowerClassName#List->currentPage();
@@ -34,10 +33,8 @@ class #upperClassName#Controller extends AbstractAdminController
     public function create#upperClassName#()
     {
         $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
 
         $data = new #upperClassName#();
@@ -65,10 +62,8 @@ class #upperClassName#Controller extends AbstractAdminController
             return $this->response->redirect('/admin/#lowerPathName#');
         }
         $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $data = #upperClassName#::find($id);
         $this->bladeData["error"] = [];
@@ -95,10 +90,8 @@ class #upperClassName#Controller extends AbstractAdminController
             return $this->response->redirect('/admin/#lowerPathName#');
         }
         $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
+            return ServiceConstant::error('no permission');
         }
         #upperClassName#::where('id', $id)->delete();
         return ServiceConstant::success();

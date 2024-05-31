@@ -1,0 +1,12 @@
+                                <div class="form-group @if(isset($error['#field#']))  has-error @endif">
+                                    <label for="#field#" class="col-sm-2 asterisk control-label">#fieldComment#</label>
+                                    <div class="col-sm-10">
+                                        @if(isset($error['#field#']))
+                                            <label class="control-label"><i class="fa fa-times-circle-o"></i> {{$error['#field#']}}</label>
+                                        @endif
+                                        <div class="input-group" style="width: 100%;">
+                                            <input type="file" id="#field#" name="#field#" class="form-control #field#" placeholder="请输入#fieldComment#">
+                                        </div>
+                                    </div>
+                                </div>
+
