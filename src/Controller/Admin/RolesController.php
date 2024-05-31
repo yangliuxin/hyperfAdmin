@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
+use Hyperf\HttpMessage\Cookie\Cookie;
 use Liuxinyang\HyperfAdmin\Model\AdminMenus;
 use Liuxinyang\HyperfAdmin\Model\AdminRolePermissions;
 use Liuxinyang\HyperfAdmin\Model\AdminRoles;
@@ -17,6 +18,11 @@ class RolesController extends AbstractAdminController
     public function listRoles()
     {
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
+        }
         if(!$this->checkPermission($user['id'],'role')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -34,6 +40,11 @@ class RolesController extends AbstractAdminController
     public function createRoles()
     {
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
+        }
         if(!$this->checkPermission($user['id'],'role')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -90,6 +101,11 @@ class RolesController extends AbstractAdminController
             return $this->response->redirect('/admin/roles');
         }
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
+        }
         if(!$this->checkPermission($user['id'],'role')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -152,6 +168,11 @@ class RolesController extends AbstractAdminController
             return $this->response->redirect('/admin/roles');
         }
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        }
         if(!$this->checkPermission($user['id'],'role')){
             return ServiceConstant::error('no permission');
         }

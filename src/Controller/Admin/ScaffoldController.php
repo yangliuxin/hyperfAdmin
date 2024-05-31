@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
+use Hyperf\HttpMessage\Cookie\Cookie;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\Database\Schema\Schema;
 use Hyperf\DbConnection\Db;
@@ -16,6 +17,11 @@ class ScaffoldController extends AbstractAdminController
     public function index()
     {
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
+        }
         if(!$this->checkPermission($user['id'],'scaffold')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -37,6 +43,11 @@ class ScaffoldController extends AbstractAdminController
     public function scaffoldTablePost()
     {
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
+        }
         if(!$this->checkPermission($user['id'],'scaffold')){
             return ServiceConstant::error('no permission');
         }
@@ -52,6 +63,11 @@ class ScaffoldController extends AbstractAdminController
     public function scaffoldPost()
     {
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        }
         if(!$this->checkPermission($user['id'],'scaffold')){
             return ServiceConstant::error('no permission');
         }

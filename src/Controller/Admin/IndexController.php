@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
+use Hyperf\HttpMessage\Cookie\Cookie;
 use Liuxinyang\HyperfAdmin\Model\AdminStats;
 use Liuxinyang\HyperfAdmin\Model\AdminUsers;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -15,6 +16,11 @@ class IndexController extends AbstractAdminController
     public function index()
     {
         $user = $this->_init();
+        if(!$user){
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
+        }
         if(!$this->checkPermission($user['id'],'home')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -65,10 +71,10 @@ class IndexController extends AbstractAdminController
     public function profile()
     {
         $user = $this->_init();
-        if (!$user) {
+        if(!$user){
             $this->session->remove("admin");
             $this->session->clear();
-            return $this->response->redirect('/admin/login');
+            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
         }
         $user = AdminUsers::find($user['id']);
         $this->bladeData['data'] = $user;

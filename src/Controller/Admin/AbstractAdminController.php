@@ -48,9 +48,7 @@ abstract class AbstractAdminController
         $user = $this->session->get("admin");
         $cookie = $this->request->cookie('name');
         if (!$user && !$cookie) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+            return false;
         }
         if($user){
             $user = json_decode($user,true);
@@ -58,9 +56,7 @@ abstract class AbstractAdminController
             $user = json_decode($cookie, true);
         }
         if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+            return false;
         }
 
         $this->bladeData['user'] = $user;
