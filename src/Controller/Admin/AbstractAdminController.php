@@ -12,16 +12,14 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
-use Hyperf\Context\ApplicationContext;
-use Liuxinyang\HyperfAdmin\Model\AdminMenus;
-use Liuxinyang\HyperfAdmin\Model\AdminRolePermissions;
-use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\View\RenderInterface;
-use Liuxinyang\HyperfAdmin\Model\AdminStats;
+use Liuxinyang\HyperfAdmin\Model\AdminMenus;
+use Liuxinyang\HyperfAdmin\Model\AdminRolePermissions;
+use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
 use Psr\Container\ContainerInterface;
 use Yangliuxin\Utils\Utils\TreeUtils;
 
@@ -44,33 +42,15 @@ abstract class AbstractAdminController
 
     protected array $bladeData;
 
-    protected static function getRealIp(RequestInterface $request): string
-    {
-        $headers = $request->getHeaders();
 
-        if(!empty($headers['x-forwarded-for'][0])) {
-            return $headers['x-forwarded-for'][0];
-        } elseif (!empty($headers['x-real-ip'][0])) {
-            return $headers['x-real-ip'][0];
-        }
-
-        $serverParams = $request->getServerParams();
-        return $serverParams['remote_addr'] ?? '';
-
-    }
     protected function _init()
     {
-        $uri = $this->request->getUri();
-        $ip = self::getRealIp($this->request);
-        $ipInfo = getIpInfo($ip);
-        $province = $ipInfo['province'];
-        $city = $ipInfo['city'];
-        AdminStats::log($uri, $ip, $province, $city);
-
         $user = $this->session->get("admin");
         $cookie = $this->request->cookie('name');
         if (!$user && !$cookie) {
-            return false;
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->redirect('/admin/login');
         }
         if($user){
             $user = json_decode($user,true);
@@ -78,13 +58,13 @@ abstract class AbstractAdminController
             $user = json_decode($cookie, true);
         }
         if(!$user){
-            return false;
+            $this->session->remove("admin");
+            $this->session->clear();
+            return $this->response->redirect('/admin/login');
         }
 
         $this->bladeData['user'] = $user;
         $menuDataList = AdminMenus::where('type', 1)->get()->toArray();
-        $roleId = AdminRoleUsers::where('user_id', $user['id'])->value('role_id');
-        $permissions = AdminRolePermissions::getAllPermissions($roleId);
         foreach ($menuDataList as $key => $menu) {
             if ($menu['uri'] == '') {
                 $menuDataList[$key]['uri'] = '/admin/#';
@@ -93,7 +73,7 @@ abstract class AbstractAdminController
             } else {
                 $menuDataList[$key]['uri'] = '/admin/' . $menu['uri'];
             }
-            if (!self::hasPermission($menu['id'], $permissions) && $user['username'] != 'Admin' && $roleId != 1) {
+            if (!self::hasPermission($user['id'], $menu['id'])) {
                 unset($menuDataList[$key]);
             }
         }
@@ -121,13 +101,26 @@ abstract class AbstractAdminController
         return null;
     }
 
-    protected static function hasPermission($menuId, $permissions): bool
+    protected static function hasPermission($uid, $targetId): bool
     {
-        if (in_array($menuId, $permissions)) {
+        $roleId = AdminRoleUsers::where('user_id', $uid)->value('role_id');
+        $permissions = AdminRolePermissions::getAllPermissions($roleId);
+
+        if (!in_array($targetId, $permissions) && $uid != '1' && $roleId != 1) {
+            return false;
+        }
+        if (in_array($targetId, $permissions) || $uid != '1' || $roleId != 1) {
             return true;
         }
         return false;
 
     }
-
+    protected static function checkPermission($uid, $slug): bool
+    {
+        $permissionId = AdminMenus::getMenuIdBySlug($slug);
+        if(self::hasPermission($uid, $permissionId)){
+            return true;
+        }
+        return false;
+    }
 }

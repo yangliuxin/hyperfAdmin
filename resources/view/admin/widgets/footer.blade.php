@@ -1,4 +1,4 @@
-<div>
+<div style="position: fixed; bottom: 0; width: 100%;">
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.1

@@ -8,3 +8,6 @@ admin for hyperf
 #### 5、route.php 里填写如下路由 ####
     Router::addRoute(['GET', 'POST', 'HEAD'], '/admin', 'Liuxinyang\HyperfAdmin\Controller\Admin\IndexController@index');
     Router::addRoute(['GET', 'POST', 'HEAD'], '/admin/', 'Liuxinyang\HyperfAdmin\Controller\Admin\IndexController@index');
+#### 6、后台首页统计部分 ####
+    需记录访问请求日志
+    AdminStats::log($uri, $ip, $province, $city);

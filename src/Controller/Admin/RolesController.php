@@ -17,10 +17,8 @@ class RolesController extends AbstractAdminController
     public function listRoles()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'role')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $rolesList = AdminRoles::orderBy('id', 'asc')->paginate(20);
         $this->bladeData['rolesList'] = $rolesList;
@@ -36,10 +34,8 @@ class RolesController extends AbstractAdminController
     public function createRoles()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'role')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
 
         $jsTreeList = [];
@@ -94,10 +90,8 @@ class RolesController extends AbstractAdminController
             return $this->response->redirect('/admin/roles');
         }
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'role')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $jsTreeList = [];
         $menuList = AdminMenus::all();
@@ -158,10 +152,8 @@ class RolesController extends AbstractAdminController
             return $this->response->redirect('/admin/roles');
         }
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        if(!$this->checkPermission($user['id'],'role')){
+            return ServiceConstant::error('no permission');
         }
         AdminRoles::where('id', $id)->delete();
         AdminRolePermissions::where('role_id', $id)->delete();

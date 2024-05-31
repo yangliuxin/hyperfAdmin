@@ -15,10 +15,8 @@ class IndexController extends AbstractAdminController
     public function index()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'home')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $this->bladeData['dataCount1'] = 10000;
         $this->bladeData['dataCount2'] = 20000;

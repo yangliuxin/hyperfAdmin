@@ -17,10 +17,8 @@ class ScaffoldController extends AbstractAdminController
     public function index()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'scaffold')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $tables = Db::select('SHOW TABLES');
         $tableList = [];
@@ -40,10 +38,8 @@ class ScaffoldController extends AbstractAdminController
     public function scaffoldPost()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        if(!$this->checkPermission($user['id'],'scaffold')){
+            return ServiceConstant::error('no permission');
         }
         $tableName = $this->request->input("table");
         $modelNameSpace = $this->request->input("model");

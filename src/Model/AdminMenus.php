@@ -36,4 +36,12 @@ class AdminMenus extends Model
         return $result;
     }
 
+    public static function getMenuIdBySlug($slug){
+        $menuId =  self::where('slug', $slug)->value('id');
+        if($menuId){
+            return $menuId;
+        }
+        return 0;
+    }
+
 }

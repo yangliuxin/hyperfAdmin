@@ -17,10 +17,8 @@ class MenuController extends AbstractAdminController
     public function listMenu()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'menu')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $menuList = AdminMenus::all();
         $menuList = TreeUtils::getTree($menuList);
@@ -33,10 +31,8 @@ class MenuController extends AbstractAdminController
     public function createMenu()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'menu')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $selectMenuOptions = AdminMenus::where('type', 1)->get()->toArray();
         $selectMenuOptions = TreeUtils::getTree($selectMenuOptions);
@@ -78,10 +74,8 @@ class MenuController extends AbstractAdminController
             return $this->response->redirect('/admin/menu');
         }
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'menu')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $selectMenuOptions = AdminMenus::where('type', 1)->get()->toArray();
         $selectMenuOptions = TreeUtils::getTree($selectMenuOptions);
@@ -123,10 +117,8 @@ class MenuController extends AbstractAdminController
             return $this->response->redirect('/admin/menu');
         }
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        if(!$this->checkPermission($user['id'],'menu')){
+            return ServiceConstant::error('no permission');
         }
         AdminMenus::where('id', $id)->delete();
 

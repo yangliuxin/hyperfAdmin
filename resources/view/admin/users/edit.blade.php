@@ -201,7 +201,7 @@
             }
             $("#avatar_file").fileinput(avatar_options);
 
-            var obj = $('#roles').select2({"allowClear":false,"placeholder":{"id":"","text":"父级菜单"}}).val({{$data['roles']}}).trigger("change");
+            var obj = $('#roles').select2({"allowClear":false,"placeholder":{"id":"","text":"所属角色"}}).val({{$data['roles']}}).trigger("change");
         });
     </script>
 @endsection

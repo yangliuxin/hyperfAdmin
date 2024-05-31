@@ -17,10 +17,8 @@ class UsersController extends AbstractAdminController
     public function listUsers()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'user')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $usersList = AdminUsers::orderBy('id', 'asc')->paginate(20);
         $this->bladeData['usersList'] = $usersList;
@@ -36,10 +34,8 @@ class UsersController extends AbstractAdminController
     public function createUsers()
     {
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'user')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
 
         $data = new AdminUsers();
@@ -101,10 +97,8 @@ class UsersController extends AbstractAdminController
             return $this->response->redirect('/admin/users');
         }
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->redirect('/admin/login');
+        if(!$this->checkPermission($user['id'],'user')){
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
         $data = AdminUsers::find($id)->toArray();
         $data['roles'] = AdminRoleUsers::getRoleIdByUserId($id);
@@ -139,7 +133,7 @@ class UsersController extends AbstractAdminController
             if ($name) {
                 $userData['name'] = $name;
             }
-            if ($password && $password != $user['password']) {
+            if ($password && $password != $data['password']) {
                 $userData['password'] = md5($password . $data['salt']);
             }
             $path = $this->dealFiletype($avatarFile);
@@ -167,10 +161,8 @@ class UsersController extends AbstractAdminController
             return $this->response->redirect('/admin/users');
         }
         $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+        if(!$this->checkPermission($user['id'],'user')){
+            return ServiceConstant::error('no permission');
         }
         AdminUsers::where('id', $id)->delete();
         AdminRoleUsers::where('user_id', $id)->delete();
