@@ -23,8 +23,12 @@ class #upperClassName#Controller extends AbstractAdminController
         if(!$this->checkPermission($user['id'],'#lowerPathName#')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
-
-        $#lowerClassName#List = #upperClassName#::orderBy('id', 'asc')->paginate(20);
+        $where = [];
+        $id = $this->request->input('id', 0);
+        if($id){
+            $where[] = ['id', '=' ,$id];
+        }
+        $#lowerClassName#List = #upperClassName#::where($where)->orderBy('id', 'asc')->paginate(20);
         $this->bladeData['#lowerClassName#List'] = $#lowerClassName#List;
         $this->bladeData['pageNo'] = $#lowerClassName#List->currentPage();
         $totalPages = floor($#lowerClassName#List->total() / $#lowerClassName#List->perPage()) + ($#lowerClassName#List->total() % $#lowerClassName#List->perPage() == 0 ? 0 : 1);

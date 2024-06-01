@@ -26,7 +26,12 @@ class RolesController extends AbstractAdminController
         if(!$this->checkPermission($user['id'],'role')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
-        $rolesList = AdminRoles::orderBy('id', 'asc')->paginate(20);
+        $where = [];
+        $id = $this->request->input('id', 0);
+        if($id){
+            $where[] = ['id', '=' ,$id];
+        }
+        $rolesList = AdminRoles::where($where)->orderBy('id', 'asc')->paginate(20);
         $this->bladeData['rolesList'] = $rolesList;
         $this->bladeData['pageNo'] = $rolesList->currentPage();
         $totalPages = floor($rolesList->total() / $rolesList->perPage()) + ($rolesList->total() % $rolesList->perPage()) == 0 ? 0 : 1;

@@ -26,7 +26,12 @@ class UsersController extends AbstractAdminController
         if(!$this->checkPermission($user['id'],'user')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
-        $usersList = AdminUsers::orderBy('id', 'asc')->paginate(20);
+        $where = [];
+        $id = $this->request->input('id', 0);
+        if($id){
+            $where[] = ['id', '=' ,$id];
+        }
+        $usersList = AdminUsers::where($where)->orderBy('id', 'asc')->paginate(20);
         $this->bladeData['usersList'] = $usersList;
         $this->bladeData['pageNo'] = $usersList->currentPage();
         $totalPages = floor($usersList->total() / $usersList->perPage()) + ($usersList->total() % $usersList->perPage()) == 0 ? 0 : 1;
