@@ -97,6 +97,24 @@ abstract class AbstractAdminController
         return null;
     }
 
+    protected function dealMultiFiletype($files)
+    {
+        $result = [];
+        foreach ($files as $file) {
+            if ($file) {
+                $image = file_get_contents($file->getRealPath());
+                if ($image) {
+                    $imagePath = '/uploads/images/' . str_random(10) . '.png';
+                    $storagePath = realpath(BASE_PATH . '/public');
+                    file_put_contents($storagePath . $imagePath, $image);
+                    $result[] =  $imagePath;
+                }
+            }
+        }
+
+        return $result;
+    }
+
     protected static function hasPermission($uid, $targetId): bool
     {
         if ($uid == 1) {
