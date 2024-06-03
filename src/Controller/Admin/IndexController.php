@@ -24,10 +24,32 @@ class IndexController extends AbstractAdminController
         if(!$this->checkPermission($user['id'],'home')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
-        $this->bladeData['dataCount1'] = 10000;
-        $this->bladeData['dataCount2'] = 20000;
-        $this->bladeData['dataCount3'] = 30000;
-        $this->bladeData['dataCount4'] = 40000;
+        $this->bladeData['statistics'] = [
+            [
+                'icon' => 'ion-ios-gear-outline',
+                'class' => 'bg-aqua',
+                'title' => '占位符1',
+                'data' => 10000
+            ],
+            [
+                'icon' => 'fa-google-plus',
+                'class' => 'bg-red',
+                'title' => '占位符2',
+                'data' => 20000
+            ],
+            [
+                'icon' => 'ion-ios-cart-outline',
+                'class' => 'bg-green',
+                'title' => '占位符3',
+                'data' => 30000
+            ],
+            [
+                'icon' => 'ion-ios-people-outline',
+                'class' => 'bg-yellow',
+                'title' => '占位符4',
+                'data' => 40000
+            ],
+        ];
         $this->bladeData['hotUriList'] = AdminStats::getHotUrlList();
         $data = AdminStats::getPieData();
         $pieChartData = [

@@ -165,11 +165,13 @@ class ScaffoldController extends AbstractAdminController
             $listContent = str_replace("#lowerPathName#", $lowerPathName, $listContent);
             $thRowContent = '';
             $thRowTemplate = "<th>#field#</th>";
+            $columnCount = 3;
             foreach ($fieldComment as $field => $comment) {
                 if (!in_array($field, ['id', 'created_at', 'updated_at', 'deleted_at'])) {
                     $tempStr = $thRowTemplate;
                     $tempStr = str_replace("#field#", $comment, $tempStr);
                     $thRowContent .= $tempStr;
+                    $columnCount++;
                 }
             }
             $listContent = str_replace("#thRowContent#", $thRowContent, $listContent);
@@ -191,6 +193,7 @@ class ScaffoldController extends AbstractAdminController
                     $tdRowContent .= $tempStr;
                 }
             }
+            $listContent = str_replace("#columnCount#", $columnCount, $listContent);
             $listContent = str_replace("#tdRowContent#", $tdRowContent, $listContent);
             file_put_contents(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName . '/list.blade.php', $listContent);
 
