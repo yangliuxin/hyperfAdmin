@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Controller\Admin;
 
+use Hyperf\HttpMessage\Stream\SwooleStream;
 use Liuxinyang\HyperfAdmin\Controller\Admin\AbstractAdminController;
 use App\Model\#upperClassName#;
 use Yangliuxin\Utils\Utils\ServiceConstant;
@@ -120,4 +121,30 @@ class #upperClassName#Controller extends AbstractAdminController
         #upperClassName#::where('id', $id)->delete();
         return ServiceConstant::success();
     }
+
+    #[RequestMapping('/admin/#lowerPathName#/export', methods: ['GET'])]
+        public function export($id)
+        {
+            $user = $this->_init();
+            if (!$user) {
+                $this->session->remove("admin");
+                $this->session->clear();
+                return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
+            }
+            if (!$this->checkPermission($user['id'], '#lowerPathName#')) {
+                return ServiceConstant::error('no permission');
+            }
+
+            $exportTitle = '#exportTitle#';
+            $exportContent = $exportTitle . "\n";
+            $list = #upperClassName#::all()->toArray();
+            foreach ($list as $key => $val) {
+                $exportContent .= join(",", array_values($val)) . "\n";
+            }
+
+            return $this->response->withHeader('Content-type', 'application/vnd.ms-excel')
+                ->withHeader('Content-Disposition', 'inline; filename=#lowerPathName#.csv')
+                ->withBody(new SwooleStream((string)$exportContent));
+
+        }
 }

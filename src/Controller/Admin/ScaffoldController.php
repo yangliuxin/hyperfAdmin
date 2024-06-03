@@ -125,6 +125,7 @@ class ScaffoldController extends AbstractAdminController
             $controllerContent = str_replace("#lowerClassName#", $lowerClassName, $controllerContent);
             $controllerContent = str_replace("#lowerPathName#", $lowerPathName, $controllerContent);
             $modelRequestContent = '';
+            $exportTitle = '序号,';
             foreach ($fieldType as $field => $type) {
                 if (!in_array($field, ['id', 'created_at', 'updated_at', 'deleted_at'])) {
                     if($type == 'pic'){
@@ -141,12 +142,14 @@ class ScaffoldController extends AbstractAdminController
                         $tempStr = str_replace("#fieldComment#", $fieldComment[$field], $tempStr);
                         $tempStr = str_replace("#lowerPathName#", $lowerPathName, $tempStr);
                         $modelRequestContent .= $tempStr;
-                    } 
-                    
+                    }
+                    $exportTitle .= $fieldComment[$field].',';
                 }
 
             }
+            $exportTitle .= '创建时间,更新时间';
             $controllerContent = str_replace("#modelRequest#", $modelRequestContent, $controllerContent);
+            $controllerContent = str_replace("#exportTitle#", $exportTitle, $controllerContent);
             file_put_contents(realpath(BASE_PATH) . '/app/Controller/Admin/' . $upperClassName . 'Controller.php', $controllerContent);
         }
         

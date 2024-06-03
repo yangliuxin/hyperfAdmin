@@ -16,7 +16,9 @@
 
                         <div class="box-header with-border">
                             <div class="pull-right">
-
+                                <div class="btn-group pull-right" style="margin-right: 10px">
+                                    <a href="/admin/#lowerPathName#/export" target="_blank" class="btn btn-sm btn-twitter" title="导出"><i class="fa fa-download"></i><span class="hidden-xs"> 导出</span></a>
+                                </div>
                                 <div class="btn-group pull-right grid-create-btn" style="margin-right: 10px">
                                     <a href="/admin/#lowerPathName#/create" class="btn btn-sm btn-success" title="新增">
                                         <i class="fa fa-plus"></i><span class="hidden-xs">&nbsp;&nbsp;新增</span>
