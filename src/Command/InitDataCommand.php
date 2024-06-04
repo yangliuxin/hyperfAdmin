@@ -8,7 +8,7 @@ use Hyperf\Database\Schema\Blueprint;
 use Hyperf\Database\Schema\Schema;
 use Hyperf\DbConnection\Db;
 
-#[Command(name: "init:data")]
+#[Command(name: "admin:init")]
 class InitDataCommand extends HyperfCommand
 {
 
