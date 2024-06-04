@@ -45,7 +45,7 @@ return [
         Constant::OPTION_TASK_ENABLE_COROUTINE => false,
         Constant::OPTION_DOCUMENT_ROOT => BASE_PATH . '/public',
         Constant::OPTION_ENABLE_STATIC_HANDLER => true,
-//        Constant::OPTION_DAEMONIZE => true
+        Constant::OPTION_DAEMONIZE => env('APP_ENV') == 'production'
 
     ],
     'callbacks' => [
