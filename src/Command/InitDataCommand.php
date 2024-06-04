@@ -18,7 +18,6 @@ class InitDataCommand extends HyperfCommand
         //1、config文件
         if (!file_exists(BASE_PATH . '/public/vendor/.install')) {
             $configArray = [
-                'annotations.php',
                 'middlewares.php',
                 'server.php',
                 'session.php',
