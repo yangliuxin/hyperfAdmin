@@ -32,7 +32,7 @@ class IndexController extends AbstractAdminController
                 'data' => 10000
             ],
             [
-                'icon' => 'fa-google-plus',
+                'icon' => 'ion-android-mail',
                 'class' => 'bg-red',
                 'title' => '占位符2',
                 'data' => 20000
