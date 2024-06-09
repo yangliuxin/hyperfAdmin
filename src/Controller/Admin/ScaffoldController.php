@@ -196,7 +196,7 @@ class ScaffoldController extends AbstractAdminController
                     $tdRowContent .= $tempStr;
                 }
             }
-            $listContent = str_replace("#columnCount#", $columnCount, $listContent);
+            $listContent = str_replace("#columnCount#", strval($columnCount), $listContent);
             $listContent = str_replace("#tdRowContent#", $tdRowContent, $listContent);
             file_put_contents(realpath(BASE_PATH) . '/resources/view/admin/' . $lowerPathName . '/list.blade.php', $listContent);
 
