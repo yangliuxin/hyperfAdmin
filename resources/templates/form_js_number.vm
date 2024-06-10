@@ -1,7 +1,6 @@
-                                                $('.#field#:not(.initialized)')
-                                                    .addClass('initialized')
-                                                    .bootstrapNumber({
-                                                        upClass: 'success',
-                                                        downClass: 'primary',
-                                                        center: true
-                                                    });
+            $('.#field#:not(.initialized)').addClass('initialized').bootstrapNumber({
+                upClass: 'success',
+                downClass: 'primary',
+                center: true
+            });
+

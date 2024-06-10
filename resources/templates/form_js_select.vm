@@ -1,1 +1,4 @@
-                                        $('##field#').select2({"allowClear":false,"placeholder":{"id":"","text":"请选择#fieldComment#"}}).val({{$data['#field#']}}).trigger("change");
+            $('##field#').select2({"allowClear":false,"placeholder":{"id":"","text":"请选择#fieldComment#"}}).val({{$data['#field#']}}).trigger("change");
+
+
+

@@ -1,29 +1,30 @@
-                                                var #field#Options = {
-                                                    "overwriteInitial": true,
-                                                    "initialPreviewAsData": true,
-                                                    "msgPlaceholder": "选择图片",
-                                                    "browseLabel": "浏览",
-                                                    "cancelLabel": "取消",
-                                                    "showRemove": false,
-                                                    "showUpload": false,
-                                                    "showCancel": false,
-                                                    "dropZoneEnabled": false,
-                                                    "allowedFileExtensions": ['jpg', 'png'],
-                                                    "maxFileSize": 20000,
-                                                    "fileActionSettings": {
-                                                        "showRemove": false,
-                                                        "showDrag": false
-                                                    },
-                                                    "allowedFileTypes": ["image"]
-                                                };
-                                                var #field#_image = '{{$data['#field#']}}'
-                                                if (#field#_image !== '' && #field#_image !== null) {
-                                                    var #field#InitImg = {
-                                                        initialPreview: [
-                                                            #field#_image,
-                                                        ]
-                                                    }
-                                                    #field#Options = {#field#Options, ...#field#InitImg};
+            var #field#Options = {
+                "overwriteInitial": true,
+                "initialPreviewAsData": true,
+                "msgPlaceholder": "选择图片",
+                "browseLabel": "浏览",
+                "cancelLabel": "取消",
+                "showRemove": false,
+                "showUpload": false,
+                "showCancel": false,
+                "dropZoneEnabled": false,
+                "allowedFileExtensions": ['jpg', 'png'],
+                "maxFileSize": 20000,
+                "fileActionSettings": {
+                    "showRemove": false,
+                    "showDrag": false
+                },
+                "allowedFileTypes": ["image"]
+            };
+            var #field#_image = '{{$data['#field#']}}'
+            if (#field#_image !== '' && #field#_image !== null) {
+                var #field#InitImg = {
+                    initialPreview: [
+                        #field#_image,
+                    ]
+                }
+                #field#Options = {#field#Options, ...#field#InitImg};
 
-                                                }
-                                                $("##field#").fileinput(#field#Options);
+            }
+            $("##field#").fileinput(#field#Options);
+

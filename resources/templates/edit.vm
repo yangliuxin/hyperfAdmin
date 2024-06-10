@@ -1,6 +1,6 @@
 @extends('admin.layout.default')
 @section('content')
-    #formCssContent#
+#formCssContent#
     <style>
         .glyphicon{
             color: orange;
@@ -67,7 +67,7 @@
     <script>
         $(function () {
             $('#form').attr('action', window.location.href)
-            #formScriptContent#
+#formScriptContent#
         });
     </script>
 @endsection
