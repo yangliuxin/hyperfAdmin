@@ -24,7 +24,7 @@
                         #field#_image_array
                     ]
                 }
-                #field#Options = {#field#Options, ...#field#InitImg};
+                #field#Options = {...#field#Options, ...#field#InitImg};
 
             }
             $("##field#").fileinput(#field#Options);
