@@ -21,7 +21,7 @@
                 var #field#_image_array = #field#_image.split(',')
                 var #field#InitImg = {
                     initialPreview: [
-                        #field#_image_array
+                        ...#field#_image_array
                     ]
                 }
                 #field#Options = {...#field#Options, ...#field#InitImg};
