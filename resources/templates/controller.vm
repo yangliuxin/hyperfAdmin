@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Controller\Admin;
 
+use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Liuxinyang\HyperfAdmin\Controller\Admin\AbstractAdminController;
 use App\Model\#upperClassName#;
