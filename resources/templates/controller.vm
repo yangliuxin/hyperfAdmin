@@ -133,7 +133,7 @@ class #upperClassName#Controller extends AbstractAdminController
             return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
         }
         if (!$this->checkPermission($user['id'], '#lowerPathName#')) {
-            return ServiceConstant::error('no permission');
+            return $this->render->render('/admin/noauth', $this->bladeData);
         }
 
         $exportTitle = '#exportTitle#';
