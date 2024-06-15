@@ -11,7 +11,5 @@ admin for hyperf
 #### 6、后台首页统计部分 ####
     需记录访问请求日志
     AdminStats::log($uri, $ip, $province, $city);
-#### 7、检测权限 ####
-    if(!$this->checkPermission($user['id'],'slug标识')){
-        return $this->render->render('/admin/noauth', $this->bladeData);
-    }
+#### 7、方法级检测权限 ####
+    #[PermissionCheck('{slug}')]

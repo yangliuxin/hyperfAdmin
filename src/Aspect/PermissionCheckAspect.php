@@ -3,20 +3,15 @@ declare(strict_types=1);
 
 namespace Liuxinyang\HyperfAdmin\Aspect;
 
-use App\Service\Log;
-use Hyperf\Context\ApplicationContext;
 use Hyperf\Context\Context;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Aop\AbstractAspect;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
-use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\View\RenderInterface;
 use Liuxinyang\HyperfAdmin\Annotaion\PermissionCheck;
 use Hyperf\Di\Annotation\Aspect;
 use Liuxinyang\HyperfAdmin\Model\AdminMenus;
 use Liuxinyang\HyperfAdmin\Model\AdminRolePermissions;
 use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
-use Psr\Http\Message\ResponseInterface;
 
 #[Aspect(
     annotations: [
@@ -30,10 +25,7 @@ class PermissionCheckAspect extends AbstractAspect
     {
         $annotation = $proceedingJoinPoint->getAnnotationMetadata()->method[PermissionCheck::class] ?? null;
         $slug = $annotation->slug;
-        Log::info("METADATA:".$slug, [$annotation]);
-        $response = Context::get(ResponseInterface::class);
         $session =  Context::get(SessionInterface::class);
-        $render = ApplicationContext::getContainer()->get(RenderInterface::class);
         $user = json_decode($session->get("admin"), true);
         if(!$this->checkPermission($user['id'], $slug)){
             throw new \Exception('no permission', 403);
