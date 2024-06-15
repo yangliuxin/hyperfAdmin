@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 use Hyperf\HttpMessage\Cookie\Cookie;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\Database\Schema\Schema;
 use Hyperf\DbConnection\Db;
@@ -11,17 +13,13 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 
 #[Controller]
+#[Middleware(AuthMiddleware::class)]
 class ScaffoldController extends AbstractAdminController
 {
     #[RequestMapping('/admin/scaffold', methods: ['GET'])]
     public function index()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'scaffold')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -42,12 +40,7 @@ class ScaffoldController extends AbstractAdminController
     #[RequestMapping('/admin/api/scaffold/table', methods: ['POST'])]
     public function scaffoldTablePost()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'scaffold')){
             return ServiceConstant::error('no permission');
         }
@@ -62,12 +55,7 @@ class ScaffoldController extends AbstractAdminController
     #[RequestMapping('/admin/api/scaffold', methods: ['POST'])]
     public function scaffoldPost()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'scaffold')){
             return ServiceConstant::error('no permission');
         }

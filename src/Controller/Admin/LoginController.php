@@ -58,7 +58,7 @@ class LoginController extends AbstractAdminController
 
         $this->session->set("admin", json_encode($user, 320));
         if($remember){
-            $cookie = new Cookie('admin', json_encode($user, 320));
+            $cookie = new Cookie('admin', json_encode($user, 320), 3600 * 24 * 7);
             return $this->response->withCookie($cookie)->redirect('/admin/index');
         } else {
             return $this->response->redirect('/admin/index');

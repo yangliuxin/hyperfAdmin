@@ -4,52 +4,25 @@ declare(strict_types=1);
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 use Hyperf\HttpMessage\Cookie\Cookie;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Liuxinyang\HyperfAdmin\Model\AdminStats;
 use Liuxinyang\HyperfAdmin\Model\AdminUsers;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 
 #[Controller]
+#[Middleware(AuthMiddleware::class)]
 class IndexController extends AbstractAdminController
 {
-    #[RequestMapping('/admin/index', methods: ['GET'])]
+    #[RequestMapping('/admin/index', methods: ['GET', 'POST', 'HEADER'])]
     public function index()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
-        if(!$this->checkPermission($user['id'],'home')){
+        if(!$this->checkPermission($this->user['id'],'home')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
-        $this->bladeData['statistics'] = [
-            [
-                'icon' => 'ion-ios-gear-outline',
-                'class' => 'bg-aqua',
-                'title' => '占位符1',
-                'data' => 10000
-            ],
-            [
-                'icon' => 'ion-android-mail',
-                'class' => 'bg-red',
-                'title' => '占位符2',
-                'data' => 20000
-            ],
-            [
-                'icon' => 'ion-ios-cart-outline',
-                'class' => 'bg-green',
-                'title' => '占位符3',
-                'data' => 30000
-            ],
-            [
-                'icon' => 'ion-ios-people-outline',
-                'class' => 'bg-yellow',
-                'title' => '占位符4',
-                'data' => 40000
-            ],
-        ];
+        $this->bladeData['statisticsShow'] = config('hyperfAdmin.statistics.show');
+        $this->bladeData['statistics'] = config('hyperfAdmin.statistics.data');
         $this->bladeData['hotUriList'] = AdminStats::getHotUrlList();
         $data = AdminStats::getPieData();
         $pieChartData = [
@@ -92,12 +65,7 @@ class IndexController extends AbstractAdminController
     #[RequestMapping('/admin/profile', methods: ['GET', 'POST'])]
     public function profile()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         $user = AdminUsers::find($user['id']);
         $this->bladeData['data'] = $user;
         if ($this->request->isMethod("POST")) {

@@ -5,6 +5,8 @@ namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 
 use Hyperf\HttpMessage\Cookie\Cookie;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Liuxinyang\HyperfAdmin\Model\AdminMenus;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -12,17 +14,13 @@ use Hyperf\HttpServer\Annotation\RequestMapping;
 use Yangliuxin\Utils\Utils\TreeUtils;
 
 #[Controller]
+#[Middleware(AuthMiddleware::class)]
 class MenuController extends AbstractAdminController
 {
     #[RequestMapping('/admin/menu', methods: ['GET'])]
     public function listMenu()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'menu')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -36,12 +34,7 @@ class MenuController extends AbstractAdminController
     #[RequestMapping('/admin/menu/create', methods: ['GET', 'POST'])]
     public function createMenu()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'menu')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -84,12 +77,7 @@ class MenuController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/menu');
         }
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'menu')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -127,17 +115,13 @@ class MenuController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/menu/delete/{id}', methods: ['DELETE'])]
+    #[Middleware(AuthMiddleware::class)]
     public function deleteMenu($id)
     {
         if (!$id) {
             return $this->response->redirect('/admin/menu');
         }
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'menu')){
             return ServiceConstant::error('no permission');
         }

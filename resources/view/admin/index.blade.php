@@ -12,6 +12,7 @@
         <!-- Main content -->
         <section class="content">
             <!-- Info boxes -->
+            @if($statisticsShow)
             <div class="row">
                 @foreach($statistics as $key => $val)
                 <div class="col-md-3 col-sm-6 col-xs-12">
@@ -28,7 +29,7 @@
                 @endif
                 @endforeach
             </div>
-
+            @endif
             <div class="row">
                 <div class="col-md-6">
                     <div class="box box-info">

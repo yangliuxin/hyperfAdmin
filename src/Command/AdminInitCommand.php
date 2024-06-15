@@ -9,7 +9,7 @@ use Hyperf\Database\Schema\Schema;
 use Hyperf\DbConnection\Db;
 
 #[Command(name: "admin:init")]
-class InitDataCommand extends HyperfCommand
+class AdminInitCommand extends HyperfCommand
 {
 
     public function handle()

@@ -31,7 +31,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">登录</p>
+        <p class="login-box-msg"><br ></p>
 
         <form action="/admin/login" method="post">
             <div class="form-group has-feedback @if(isset($error['username']))  has-error @endif">

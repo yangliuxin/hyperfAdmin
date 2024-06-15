@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 use Hyperf\HttpMessage\Cookie\Cookie;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Liuxinyang\HyperfAdmin\Model\AdminRoles;
 use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
 use Liuxinyang\HyperfAdmin\Model\AdminUsers;
@@ -12,17 +14,13 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 
 #[Controller]
+#[Middleware(AuthMiddleware::class)]
 class UsersController extends AbstractAdminController
 {
     #[RequestMapping('/admin/users', methods: ['GET'])]
     public function listUsers()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'user')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -44,12 +42,7 @@ class UsersController extends AbstractAdminController
     #[RequestMapping('/admin/users/create', methods: ['GET', 'POST'])]
     public function createUsers()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'user')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -112,12 +105,7 @@ class UsersController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/users');
         }
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'user')){
             return $this->render->render('/admin/noauth', $this->bladeData);
         }
@@ -181,12 +169,7 @@ class UsersController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/users');
         }
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
-        }
+        $user = $this->user;
         if(!$this->checkPermission($user['id'],'user')){
             return ServiceConstant::error('no permission');
         }

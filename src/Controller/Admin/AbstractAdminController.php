@@ -42,44 +42,40 @@ abstract class AbstractAdminController
 
     protected array $bladeData;
 
+    protected ?array $user;
+
+    public function __construct(){
+        $userSession = $this->session->get("admin");
+        if($userSession){
+            $user = json_decode($userSession, true);
+            $this->user = $user;
+            $this->bladeData['user'] = $user;
+            $menuDataList = AdminMenus::where('type', 1)->get()->toArray();
+            foreach ($menuDataList as $key => $menu) {
+                if ($menu['uri'] == '') {
+                    $menuDataList[$key]['uri'] = '/admin/#';
+                } elseif ($menu['uri'] == '/') {
+                    $menuDataList[$key]['uri'] = '/admin';
+                } else {
+                    $menuDataList[$key]['uri'] = '/admin/' . $menu['uri'];
+                }
+                if (!self::hasPermission($user['id'], $menu['id'])) {
+                    unset($menuDataList[$key]);
+                }
+            }
+
+            $this->bladeData['menuDataList'] = TreeUtils::getTree($menuDataList);
+            if(!$this->session->get('csrf_token')){
+                $this->session->set('csrf_token', str_random(32));
+            }
+            $this->bladeData['_token'] = $this->session->get('csrf_token');
+        }
+    }
+
 
     protected function _init()
     {
-        $user = $this->session->get("admin");
-        $cookie = $this->request->cookie('name');
-        if (!$user && !$cookie) {
-            return false;
-        }
-        if($user){
-            $user = json_decode($user,true);
-        } else {
-            $user = json_decode($cookie, true);
-        }
-        if(!$user){
-            return false;
-        }
 
-        $this->bladeData['user'] = $user;
-        $menuDataList = AdminMenus::where('type', 1)->get()->toArray();
-        foreach ($menuDataList as $key => $menu) {
-            if ($menu['uri'] == '') {
-                $menuDataList[$key]['uri'] = '/admin/#';
-            } elseif ($menu['uri'] == '/') {
-                $menuDataList[$key]['uri'] = '/admin';
-            } else {
-                $menuDataList[$key]['uri'] = '/admin/' . $menu['uri'];
-            }
-            if (!self::hasPermission($user['id'], $menu['id'])) {
-                unset($menuDataList[$key]);
-            }
-        }
-
-        $this->bladeData['menuDataList'] = TreeUtils::getTree($menuDataList);
-        if(!$this->session->get('csrf_token')){
-            $this->session->set('csrf_token', str_random(32));
-        }
-        $this->bladeData['_token'] = $this->session->get('csrf_token');
-        return $user;
     }
 
     protected function dealFiletype($file)
