@@ -6,6 +6,7 @@ namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Annotaion\PermissionCheck;
 use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Liuxinyang\HyperfAdmin\Model\AdminMenus;
 use Yangliuxin\Utils\Utils\ServiceConstant;
@@ -18,12 +19,10 @@ use Yangliuxin\Utils\Utils\TreeUtils;
 class MenuController extends AbstractAdminController
 {
     #[RequestMapping('/admin/menu', methods: ['GET'])]
+    #[PermissionCheck('menu')]
     public function listMenu()
     {
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'menu')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
         $menuList = AdminMenus::all();
         $menuList = TreeUtils::getTree($menuList);
         $this->bladeData['menuList'] = $menuList;
@@ -32,12 +31,10 @@ class MenuController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/menu/create', methods: ['GET', 'POST'])]
+    #[PermissionCheck('menu')]
     public function createMenu()
     {
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'menu')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
         $selectMenuOptions = AdminMenus::where('type', 1)->get()->toArray();
         $selectMenuOptions = TreeUtils::getTree($selectMenuOptions);
         $this->bladeData['selectMenuOptions'] = $selectMenuOptions;
@@ -72,15 +69,13 @@ class MenuController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/menu/edit/{id}', methods: ['GET', 'POST'])]
+    #[PermissionCheck('menu')]
     public function editMenu($id)
     {
         if (!$id) {
             return $this->response->redirect('/admin/menu');
         }
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'menu')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
         $selectMenuOptions = AdminMenus::where('type', 1)->get()->toArray();
         $selectMenuOptions = TreeUtils::getTree($selectMenuOptions);
         $this->bladeData['selectMenuOptions'] = $selectMenuOptions;
@@ -115,16 +110,13 @@ class MenuController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/menu/delete/{id}', methods: ['DELETE'])]
-    #[Middleware(AuthMiddleware::class)]
+    #[PermissionCheck('menu')]
     public function deleteMenu($id)
     {
         if (!$id) {
             return $this->response->redirect('/admin/menu');
         }
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'menu')){
-            return ServiceConstant::error('no permission');
-        }
         AdminMenus::where('id', $id)->delete();
 
         return ServiceConstant::success();

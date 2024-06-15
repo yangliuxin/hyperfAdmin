@@ -26,7 +26,8 @@
         "hyperf/http-server": "^3.0",
         "hyperf/command": "^3.0",
         "hyperf/paginator": "^3.0",
-        "doctrine/dbal": "^3.8"
+        "doctrine/dbal": "^3.8",
+        "hyperf/database": "~3.0.0"
     },
     "extra": {
         "branch-alias": {

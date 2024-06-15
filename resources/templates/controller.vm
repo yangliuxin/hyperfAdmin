@@ -2,29 +2,25 @@
 declare(strict_types=1);
 namespace App\Controller\Admin;
 
-use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Liuxinyang\HyperfAdmin\Controller\Admin\AbstractAdminController;
 use App\Model\#upperClassName#;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
+use Liuxinyang\HyperfAdmin\Annotaion\PermissionCheck;
 
 #[Controller]
+#[Middleware(AuthMiddleware::class)]
 class #upperClassName#Controller extends AbstractAdminController
 {
     #[RequestMapping('/admin/#lowerPathName#',  methods: ['GET'])]
+    #[PermissionCheck('#lowerPathName#')]
     public function list#upperClassName#()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
-        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
+        $user = $this->user;
         $where = [];
         $id = $this->request->input('id', 0);
         if($id){
@@ -41,18 +37,10 @@ class #upperClassName#Controller extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/#lowerPathName#/create',  methods: ['GET', 'POST'])]
+    #[PermissionCheck('#lowerPathName#')]
     public function create#upperClassName#()
     {
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
-        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
-
+        $user = $this->user;
         $data = new #upperClassName#();
         $this->bladeData["error"] = [];
         $this->bladeData['data'] = $data;
@@ -72,20 +60,13 @@ class #upperClassName#Controller extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/#lowerPathName#/edit/{id}',  methods: ['GET', 'POST'])]
+    #[PermissionCheck('#lowerPathName#')]
     public function edit#upperClassName#($id)
     {
         if(!$id){
             return $this->response->redirect('/admin/#lowerPathName#');
         }
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
-        }
-        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
+        $user = $this->user;
         $data = #upperClassName#::find($id);
         $this->bladeData["error"] = [];
         $this->bladeData['data'] = $data;
@@ -105,37 +86,22 @@ class #upperClassName#Controller extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/#lowerPathName#/delete/{id}',  methods: ['DELETE'])]
+    #[PermissionCheck('#lowerPathName#')]
     public function delete#upperClassName#($id)
     {
         if(!$id){
             return $this->response->redirect('/admin/#lowerPathName#');
         }
-        $user = $this->_init();
-        if(!$user){
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
-        }
-        if(!$this->checkPermission($user['id'],'#lowerPathName#')){
-            return ServiceConstant::error('no permission');
-        }
+        $user = $this->user;
         #upperClassName#::where('id', $id)->delete();
         return ServiceConstant::success();
     }
 
     #[RequestMapping('/admin/#lowerPathName#/export', methods: ['GET'])]
+    #[PermissionCheck('#lowerPathName#')]
     public function export($id)
     {
-        $user = $this->_init();
-        if (!$user) {
-            $this->session->remove("admin");
-            $this->session->clear();
-            return ServiceConstant::error(ServiceConstant::MSG_TOKEN_ERROR);
-        }
-        if (!$this->checkPermission($user['id'], '#lowerPathName#')) {
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
-
+        $user = $this->user;
         $exportTitle = '#exportTitle#';
         $exportContent = $exportTitle . "\n";
         $list = #upperClassName#::all()->toArray();

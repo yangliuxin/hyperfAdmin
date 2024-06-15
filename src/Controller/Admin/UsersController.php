@@ -5,6 +5,7 @@ namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Annotaion\PermissionCheck;
 use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Liuxinyang\HyperfAdmin\Model\AdminRoles;
 use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
@@ -18,12 +19,10 @@ use Hyperf\HttpServer\Annotation\RequestMapping;
 class UsersController extends AbstractAdminController
 {
     #[RequestMapping('/admin/users', methods: ['GET'])]
+    #[PermissionCheck('user')]
     public function listUsers()
     {
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'user')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
         $where = [];
         $id = $this->request->input('id', 0);
         if($id){
@@ -40,13 +39,10 @@ class UsersController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/users/create', methods: ['GET', 'POST'])]
+    #[PermissionCheck('user')]
     public function createUsers()
     {
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'user')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
-
         $data = new AdminUsers();
         $data['roles'] = 0;
         $this->bladeData["error"] = [];
@@ -100,15 +96,13 @@ class UsersController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/users/edit/{id}', methods: ['GET', 'POST'])]
+    #[PermissionCheck('user')]
     public function editUsers($id)
     {
         if (!$id) {
             return $this->response->redirect('/admin/users');
         }
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'user')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
         $data = AdminUsers::find($id)->toArray();
         $data['roles'] = AdminRoleUsers::getRoleIdByUserId($id);
         $this->bladeData["error"] = [];
@@ -164,15 +158,13 @@ class UsersController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/users/delete/{id}', methods: ['DELETE'])]
+    #[PermissionCheck('user')]
     public function deleteUsers($id)
     {
         if (!$id) {
             return $this->response->redirect('/admin/users');
         }
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'user')){
-            return ServiceConstant::error('no permission');
-        }
         AdminUsers::where('id', $id)->delete();
         AdminRoleUsers::where('user_id', $id)->delete();
         return ServiceConstant::success();

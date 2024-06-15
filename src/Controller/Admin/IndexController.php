@@ -5,6 +5,7 @@ namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Annotaion\PermissionCheck;
 use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Liuxinyang\HyperfAdmin\Model\AdminStats;
 use Liuxinyang\HyperfAdmin\Model\AdminUsers;
@@ -16,11 +17,9 @@ use Hyperf\HttpServer\Annotation\RequestMapping;
 class IndexController extends AbstractAdminController
 {
     #[RequestMapping('/admin/index', methods: ['GET', 'POST', 'HEADER'])]
+    #[PermissionCheck('home')]
     public function index()
     {
-        if(!$this->checkPermission($this->user['id'],'home')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
         $this->bladeData['statisticsShow'] = config('hyperfAdmin.statistics.show');
         $this->bladeData['statistics'] = config('hyperfAdmin.statistics.data');
         $this->bladeData['hotUriList'] = AdminStats::getHotUrlList();

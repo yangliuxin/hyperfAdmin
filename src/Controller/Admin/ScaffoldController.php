@@ -5,6 +5,7 @@ namespace Liuxinyang\HyperfAdmin\Controller\Admin;
 
 use Hyperf\HttpMessage\Cookie\Cookie;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Liuxinyang\HyperfAdmin\Annotaion\PermissionCheck;
 use Liuxinyang\HyperfAdmin\Middleware\AuthMiddleware;
 use Yangliuxin\Utils\Utils\ServiceConstant;
 use Hyperf\Database\Schema\Schema;
@@ -17,12 +18,10 @@ use Hyperf\HttpServer\Annotation\RequestMapping;
 class ScaffoldController extends AbstractAdminController
 {
     #[RequestMapping('/admin/scaffold', methods: ['GET'])]
+    #[PermissionCheck('scaffold')]
     public function index()
     {
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'scaffold')){
-            return $this->render->render('/admin/noauth', $this->bladeData);
-        }
         $tables = Db::select('SHOW TABLES');
         $tableList = [];
         foreach ($tables as $table) {
@@ -38,12 +37,10 @@ class ScaffoldController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/api/scaffold/table', methods: ['POST'])]
+    #[PermissionCheck('scaffold')]
     public function scaffoldTablePost()
     {
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'scaffold')){
-            return ServiceConstant::error('no permission');
-        }
         $tableName = $this->request->input("table");
         $columns = Schema::getColumnListing($tableName);
         $columns = array_filter($columns, function ($val) {
@@ -53,12 +50,10 @@ class ScaffoldController extends AbstractAdminController
     }
 
     #[RequestMapping('/admin/api/scaffold', methods: ['POST'])]
+    #[PermissionCheck('scaffold')]
     public function scaffoldPost()
     {
         $user = $this->user;
-        if(!$this->checkPermission($user['id'],'scaffold')){
-            return ServiceConstant::error('no permission');
-        }
         $tableName = $this->request->input("table");
         $modelNameSpace = $this->request->input("model");
         $controllerNameSpace = $this->request->input("controller");

@@ -70,8 +70,8 @@ class LoginController extends AbstractAdminController
     {
         $this->session->remove("admin");
         $this->session->clear();
-
-        return $this->response->withCookie(new Cookie('admin', ''))->redirect('/admin/login');
+        setcookie('admin', '', time() - 3600);
+        return $this->response->redirect('/admin/login');
     }
 
 
