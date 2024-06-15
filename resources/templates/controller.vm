@@ -20,7 +20,7 @@ class #upperClassName#Controller extends AbstractAdminController
     #[PermissionCheck('#lowerPathName#')]
     public function list#upperClassName#()
     {
-        $user = $this->user;
+        $this->_init();
         $where = [];
         $id = $this->request->input('id', 0);
         if($id){
@@ -40,7 +40,7 @@ class #upperClassName#Controller extends AbstractAdminController
     #[PermissionCheck('#lowerPathName#')]
     public function create#upperClassName#()
     {
-        $user = $this->user;
+        $this->_init();
         $data = new #upperClassName#();
         $this->bladeData["error"] = [];
         $this->bladeData['data'] = $data;
@@ -66,7 +66,7 @@ class #upperClassName#Controller extends AbstractAdminController
         if(!$id){
             return $this->response->redirect('/admin/#lowerPathName#');
         }
-        $user = $this->user;
+        $this->_init();
         $data = #upperClassName#::find($id);
         $this->bladeData["error"] = [];
         $this->bladeData['data'] = $data;
@@ -92,7 +92,6 @@ class #upperClassName#Controller extends AbstractAdminController
         if(!$id){
             return $this->response->redirect('/admin/#lowerPathName#');
         }
-        $user = $this->user;
         #upperClassName#::where('id', $id)->delete();
         return ServiceConstant::success();
     }
@@ -101,7 +100,6 @@ class #upperClassName#Controller extends AbstractAdminController
     #[PermissionCheck('#lowerPathName#')]
     public function export($id)
     {
-        $user = $this->user;
         $exportTitle = '#exportTitle#';
         $exportContent = $exportTitle . "\n";
         $list = #upperClassName#::all()->toArray();

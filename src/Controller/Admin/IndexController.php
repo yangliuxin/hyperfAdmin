@@ -20,6 +20,7 @@ class IndexController extends AbstractAdminController
     #[PermissionCheck('home')]
     public function index()
     {
+        $this->_init();
         $this->bladeData['statisticsShow'] = config('hyperfAdmin.statistics.show');
         $this->bladeData['statistics'] = config('hyperfAdmin.statistics.data');
         $this->bladeData['hotUriList'] = AdminStats::getHotUrlList();
@@ -64,6 +65,7 @@ class IndexController extends AbstractAdminController
     #[RequestMapping('/admin/profile', methods: ['GET', 'POST'])]
     public function profile()
     {
+        $this->_init();
         $user = $this->user;
         $user = AdminUsers::find($user['id']);
         $this->bladeData['data'] = $user;

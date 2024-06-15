@@ -22,7 +22,7 @@ class RolesController extends AbstractAdminController
     #[PermissionCheck('role')]
     public function listRoles()
     {
-        $user = $this->user;
+        $this->_init();
         $where = [];
         $id = $this->request->input('id', 0);
         if($id){
@@ -42,7 +42,7 @@ class RolesController extends AbstractAdminController
     #[PermissionCheck('role')]
     public function createRoles()
     {
-        $user = $this->user;
+        $this->_init();
         $jsTreeList = [];
         $menuList = AdminMenus::all();
         foreach ($menuList as $key => $menu) {
@@ -95,7 +95,7 @@ class RolesController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/roles');
         }
-        $user = $this->user;
+        $this->_init();
         $jsTreeList = [];
         $menuList = AdminMenus::all();
         foreach ($menuList as $key => $menu) {
@@ -155,7 +155,6 @@ class RolesController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/roles');
         }
-        $user = $this->user;
         AdminRoles::where('id', $id)->delete();
         AdminRolePermissions::where('role_id', $id)->delete();
         return ServiceConstant::success();

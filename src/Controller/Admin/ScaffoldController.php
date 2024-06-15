@@ -21,7 +21,7 @@ class ScaffoldController extends AbstractAdminController
     #[PermissionCheck('scaffold')]
     public function index()
     {
-        $user = $this->user;
+        $this->_init();
         $tables = Db::select('SHOW TABLES');
         $tableList = [];
         foreach ($tables as $table) {
@@ -40,7 +40,7 @@ class ScaffoldController extends AbstractAdminController
     #[PermissionCheck('scaffold')]
     public function scaffoldTablePost()
     {
-        $user = $this->user;
+        $this->_init();
         $tableName = $this->request->input("table");
         $columns = Schema::getColumnListing($tableName);
         $columns = array_filter($columns, function ($val) {
@@ -53,7 +53,7 @@ class ScaffoldController extends AbstractAdminController
     #[PermissionCheck('scaffold')]
     public function scaffoldPost()
     {
-        $user = $this->user;
+        $this->_init();
         $tableName = $this->request->input("table");
         $modelNameSpace = $this->request->input("model");
         $controllerNameSpace = $this->request->input("controller");

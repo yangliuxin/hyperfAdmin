@@ -22,7 +22,7 @@ class MenuController extends AbstractAdminController
     #[PermissionCheck('menu')]
     public function listMenu()
     {
-        $user = $this->user;
+        $this->_init();
         $menuList = AdminMenus::all();
         $menuList = TreeUtils::getTree($menuList);
         $this->bladeData['menuList'] = $menuList;
@@ -34,7 +34,7 @@ class MenuController extends AbstractAdminController
     #[PermissionCheck('menu')]
     public function createMenu()
     {
-        $user = $this->user;
+        $this->_init();
         $selectMenuOptions = AdminMenus::where('type', 1)->get()->toArray();
         $selectMenuOptions = TreeUtils::getTree($selectMenuOptions);
         $this->bladeData['selectMenuOptions'] = $selectMenuOptions;
@@ -75,7 +75,7 @@ class MenuController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/menu');
         }
-        $user = $this->user;
+        $this->_init();
         $selectMenuOptions = AdminMenus::where('type', 1)->get()->toArray();
         $selectMenuOptions = TreeUtils::getTree($selectMenuOptions);
         $this->bladeData['selectMenuOptions'] = $selectMenuOptions;
@@ -116,7 +116,6 @@ class MenuController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/menu');
         }
-        $user = $this->user;
         AdminMenus::where('id', $id)->delete();
 
         return ServiceConstant::success();

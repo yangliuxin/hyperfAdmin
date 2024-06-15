@@ -44,7 +44,8 @@ abstract class AbstractAdminController
 
     protected ?array $user;
 
-    public function __construct(){
+    protected function _init()
+    {
         $userSession = $this->session->get("admin");
         if($userSession){
             $user = json_decode($userSession, true);
@@ -70,12 +71,6 @@ abstract class AbstractAdminController
             }
             $this->bladeData['_token'] = $this->session->get('csrf_token');
         }
-    }
-
-
-    protected function _init()
-    {
-
     }
 
     protected function dealFiletype($file)

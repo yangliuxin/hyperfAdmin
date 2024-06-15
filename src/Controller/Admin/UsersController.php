@@ -22,7 +22,7 @@ class UsersController extends AbstractAdminController
     #[PermissionCheck('user')]
     public function listUsers()
     {
-        $user = $this->user;
+        $this->_init();
         $where = [];
         $id = $this->request->input('id', 0);
         if($id){
@@ -42,7 +42,7 @@ class UsersController extends AbstractAdminController
     #[PermissionCheck('user')]
     public function createUsers()
     {
-        $user = $this->user;
+        $this->_init();
         $data = new AdminUsers();
         $data['roles'] = 0;
         $this->bladeData["error"] = [];
@@ -102,7 +102,7 @@ class UsersController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/users');
         }
-        $user = $this->user;
+        $this->_init();
         $data = AdminUsers::find($id)->toArray();
         $data['roles'] = AdminRoleUsers::getRoleIdByUserId($id);
         $this->bladeData["error"] = [];
@@ -164,7 +164,6 @@ class UsersController extends AbstractAdminController
         if (!$id) {
             return $this->response->redirect('/admin/users');
         }
-        $user = $this->user;
         AdminUsers::where('id', $id)->delete();
         AdminRoleUsers::where('user_id', $id)->delete();
         return ServiceConstant::success();
