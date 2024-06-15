@@ -7,6 +7,7 @@ use Hyperf\Context\Context;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Aop\AbstractAspect;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
+use Hyperf\Di\Exception\Exception;
 use Liuxinyang\HyperfAdmin\Annotaion\PermissionCheck;
 use Hyperf\Di\Annotation\Aspect;
 use Liuxinyang\HyperfAdmin\Model\AdminMenus;
@@ -21,6 +22,9 @@ use Liuxinyang\HyperfAdmin\Model\AdminRoleUsers;
 class PermissionCheckAspect extends AbstractAspect
 {
 
+    /**
+     * @throws Exception
+     */
     public function process(ProceedingJoinPoint $proceedingJoinPoint)
     {
         $annotation = $proceedingJoinPoint->getAnnotationMetadata()->method[PermissionCheck::class] ?? null;
@@ -30,7 +34,7 @@ class PermissionCheckAspect extends AbstractAspect
         if(!$this->checkPermission($user['id'], $slug)){
             throw new \Exception('no permission', 403);
         } else {
-            return $proceedingJoinPoint->processOriginalMethod();
+            return $proceedingJoinPoint->process();
         }
 
     }

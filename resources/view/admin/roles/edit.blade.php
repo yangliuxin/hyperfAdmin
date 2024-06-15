@@ -9,7 +9,7 @@
 <section class="content-header">
     <h1>
         角色管理
-        <small>新增</small>
+        <small></small>
     </h1>
 </section>
 

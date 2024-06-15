@@ -15,7 +15,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">新增</h3>
+                    <h3 class="box-title"></h3>
 
                     <div class="box-tools">
                         <div class="btn-group pull-right" style="margin-right: 5px">
