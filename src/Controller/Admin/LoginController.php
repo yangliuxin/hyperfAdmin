@@ -18,6 +18,7 @@ class LoginController extends AbstractAdminController
         if(!$this->session->get('csrf_token')){
             $this->session->set('csrf_token', str_random(32));
         }
+        $this->bladeData = [];
         $this->bladeData['_token'] = $this->session->get('csrf_token');
         return $this->render->render('admin/login', $this->bladeData);
     }
@@ -71,6 +72,7 @@ class LoginController extends AbstractAdminController
         $this->session->remove("admin");
         $this->session->clear();
         setcookie('admin', '', time() - 3600);
+        $this->bladeData = [];
         return $this->response->redirect('/admin/login');
     }
 
