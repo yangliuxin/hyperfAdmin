@@ -46,6 +46,7 @@ abstract class AbstractAdminController
 
     protected function _init()
     {
+        $this->bladeData = [];
         $userSession = $this->session->get("admin");
         if($userSession){
             $user = json_decode($userSession, true);

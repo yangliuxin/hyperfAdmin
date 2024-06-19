@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -11,7 +10,6 @@
     <link rel="stylesheet" href="/vendor/AdminLTE/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/vendor/AdminLTE-2.4.18/bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/vendor/AdminLTE-2.4.18/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="/vendor/AdminLTE/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/vendor/AdminLTE-2.4.18/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="/vendor/AdminLTE/plugins/select2/select2.min.css">
     <link rel="stylesheet" href="/vendor/nestable/nestable.css">

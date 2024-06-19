@@ -8,16 +8,13 @@
                 <small>编辑个人资料</small>
             </h1>
         </section>
-
-        <!-- Main content -->
         <section class="content">
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-info">
                         <div class="box-header with-border">
-                            <h3 class="box-title">个人设置</h3>
+                            <h3 class="box-title"></h3>
                         </div>
-
                         <form action="/admin/profile" method="post" class="form-horizontal"
                               enctype="multipart/form-data" accept-charset="UTF-8">
                             <div class="box-body">
@@ -94,19 +91,14 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="box-footer">
-
                                 <div class="col-md-2">
                                 </div>
-
                                 <div class="col-md-8">
-
                                     <div class="btn-group pull-right">
                                         <button type="submit" class="btn btn-primary">提交</button>
                                     </div>
