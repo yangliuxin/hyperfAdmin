@@ -30,6 +30,10 @@ class PermissionCheckAspect extends AbstractAspect
         $annotation = $proceedingJoinPoint->getAnnotationMetadata()->method[PermissionCheck::class] ?? null;
         $slug = $annotation->slug;
         $session =  Context::get(SessionInterface::class);
+        $userSession = $session->get("admin");
+        if(!$userSession){
+            throw new \Exception('no permission', 403);
+        }
         $user = json_decode($session->get("admin"), true);
         if(!$this->checkPermission($user['id'], $slug)){
             throw new \Exception('no permission', 403);
