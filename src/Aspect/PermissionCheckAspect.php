@@ -32,7 +32,7 @@ class PermissionCheckAspect extends AbstractAspect
         $session =  Context::get(SessionInterface::class);
         $userSession = $session->get("admin");
         if(!$userSession){
-            throw new \Exception('no permission', 403);
+            throw new \Exception('no permission', 401);
         }
         $user = json_decode($session->get("admin"), true);
         if(!$this->checkPermission($user['id'], $slug)){
